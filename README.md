@@ -5,6 +5,6 @@
 Java 
 
 # 개발환경
-Android Studio 
+Android Studio Bumblebee | 2021 . 1 . 1 
 
 # Model data 
