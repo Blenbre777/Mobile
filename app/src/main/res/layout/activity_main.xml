@@ -45,26 +45,4 @@
         android:id="@+id/result"
         android:layout_below="@+id/classified"
         />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/confidencesText"
-        android:text="Confidences:"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/result"
-        android:layout_marginTop="30sp"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text=""
-        android:textColor="#000"
-        android:textSize="22sp"
-        android:id="@+id/confidence"
-        android:layout_below="@+id/confidencesText"
-        />
-
 </RelativeLayout>

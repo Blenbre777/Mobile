@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     TextView confidence;
     ImageView imageView;
     Button picture;
-    int imageSize = 224;
+    int imageSize = 224; // 표준 이미지 : 크기 가로 세로 224
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         result = findViewById(R.id.result);
-        confidence = findViewById(R.id.confidence);
         imageView = findViewById(R.id.imageView);
         picture = findViewById(R.id.button);
 
@@ -83,12 +82,12 @@ public class MainActivity extends AppCompatActivity {
 
             inputFeature0.loadBuffer(byteBuffer);
 
-            // 모델 결과
+            //모델 생성 및 분석 과정
             Model.Outputs outputs = model.process(inputFeature0);
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             float[] confidences = outputFeature0.getFloatArray();
-            // 이미지에 대한 수치
+
             int maxPos = 0;
             float maxConfidence = 0;
             for(int i = 0; i < confidences.length; i++){
@@ -100,11 +99,12 @@ public class MainActivity extends AppCompatActivity {
             String[] classes = {"사이다", "코카콜라"};
             result.setText(classes[maxPos]);
 
+            //이미지 수치 Run 출력
             String s = "";
             for(int i = 0; i < classes.length; i++){
                 s += String.format("%s: %.1f%%\n", classes[i], confidences[i] * 100);
             }
-            confidence.setText(s);
+            System.out.println(s);
 
             model.close();
         } catch (IOException e) {
@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // 찍은 이미지 화면에 출력
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
