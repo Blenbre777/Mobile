@@ -1,12 +1,17 @@
 package com.example.projectmasteryee;
 
+import static android.app.Activity.RESULT_OK;
+import static androidx.core.content.ContextCompat.checkSelfPermission;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
@@ -47,7 +52,7 @@ public class Tab_Main extends Fragment {
             @Override
             //카메라 촬영 허용 여부
             public void onClick(View view) {
-                if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                if (checkSelfPermission(getContext(),Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, 1);
                 } else {
@@ -56,11 +61,6 @@ public class Tab_Main extends Fragment {
             }
         });
         return view;
-    }
-
-    //문제의 오류 메소드
-    private int checkSelfPermission(String camera) {
-        return 0;
     }
 
     public void classifyImage(Bitmap image){
@@ -114,5 +114,20 @@ public class Tab_Main extends Fragment {
         } catch (IOException e) {
             // TODO Handle the exception
         }
+    }
+
+    //촬영 후 이미지 가져오기
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bitmap image = (Bitmap) data.getExtras().get("data");
+            int dimension = Math.min(image.getWidth(), image.getHeight());
+            image = ThumbnailUtils.extractThumbnail(image, dimension, dimension);
+            imageView.setImageBitmap(image);
+
+            //image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
+            //classifyImage(image);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
